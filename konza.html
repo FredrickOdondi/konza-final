@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KONZA CITY SUSTAINABILITY MANAGEMENT PORTAL</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1d2029;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #20B2AA;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            margin-bottom: 20px;
+        }
+
+        .nav-button {
+            background-color: #1A233E;
+            color: #20B2AA;
+            border: 2px solid #20B2AA;
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .nav-button:hover {
+            background-color: #48D1CC;
+            color: #121C3B;
+        }
+
+        .exit {
+            border-color: #FF6347;
+            color: #FF6347;
+        }
+
+        .exit:hover {
+            background-color: #FF6347;
+            color: #1d2029;
+        }
+
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #1d2029;
+            color: white;
+            border: 2px solid #20B2AA;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #20B2AA;
+        }
+
+        thead th {
+            background-color: #121C3B;
+            color: #20B2AA;
+            font-weight: bold;
+        }
+
+        .input-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid #20B2AA;
+            border-radius: 8px;
+            width: 80%;
+            margin: 20px auto;
+            background-color: #121C3B;
+        }
+
+        .input-container input, .input-container select {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #20B2AA;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: 2px solid #20B2AA;
+            border-radius: 8px;
+            background-color: #1A233E;
+            color: #20B2AA;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #48D1CC;
+            color: #121C3B;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KONZA CITY SUSTAINABILITY MANAGEMENT PORTAL</h1>
+        <div class="button-container">
+            <button class="nav-button" onclick="showEnergyData()">Energy</button>
+            <button class="nav-button" onclick="showWaterData()">Water</button>
+            <button class="nav-button" onclick="showWasteData()">Waste</button>
+            <button class="nav-button" onclick="showCarbonData()">Carbon</button>
+            <button class="nav-button" onclick="showTransportData()">Transport</button>
+            <button class="nav-button exit" onclick="exitPortal()">Exit</button>
+        </div>
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be dynamically injected here -->
+            </tbody>
+        </table>
+
+        <!-- Input form for adding data -->
+        <div class="input-container">
+            <h3>Add New Record</h3>
+            <select id="category">
+                <option value="Energy">Energy</option>
+                <option value="Water">Water</option>
+                <option value="Waste">Waste</option>
+                <option value="Carbon">Carbon</option>
+                <option value="Transport">Transport</option>
+            </select>
+            <input type="text" id="metric" placeholder="Enter Metric (e.g., Usage)">
+            <input type="text" id="value" placeholder="Enter Value (e.g., 1200)">
+            <button onclick="addRecord()">Add Record</button>
+        </div>
+    </div>
+
+    <script>
+        const tableBody = document.querySelector("#data-table tbody");
+
+        function populateTable(data) {
+            tableBody.innerHTML = ""; // Clear previous data
+            data.forEach(([category, metric, value]) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${category}</td>
+                    <td>${metric}</td>
+                    <td>${value}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function addRecord() {
+            const category = document.getElementById("category").value;
+            const metric = document.getElementById("metric").value;
+            const value = document.getElementById("value").value;
+
+            if (!metric || !value) {
+                alert("Please fill in both metric and value!");
+                return;
+            }
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${category}</td>
+                <td>${metric}</td>
+                <td>${value}</td>
+            `;
+            tableBody.appendChild(row);
+
+            // Clear inputs
+            document.getElementById("metric").value = "";
+            document.getElementById("value").value = "";
+        }
+
+        function showEnergyData() {
+            const data = [
+                ["Electricity", "Usage (kWh)", "1200"],
+                ["Solar Power", "Generated (kWh)", "500"],
+                ["Savings", "Reduction (%)", "20"]
+            ];
+            populateTable(data);
+        }
+
+        function showWaterData() {
+            const data = [
+                ["Water Usage", "Liters", "8000"],
+                ["Recycled Water", "Liters", "2000"],
+                ["Savings", "Reduction (%)", "25"]
+            ];
+            populateTable(data);
+        }
+
+        function showWasteData() {
+            const data = [
+                ["Recyclables", "Weight (kg)", "250"],
+                ["Non-recyclables", "Weight (kg)", "100"],
+                ["Compost", "Weight (kg)", "50"]
+            ];
+            populateTable(data);
+        }
+
+        function showCarbonData() {
+            const data = [
+                ["Transportation", "Emissions (kg CO2)", "300"],
+                ["Electricity", "Emissions (kg CO2)", "150"],
+                ["Total", "Emissions (kg CO2)", "450"]
+            ];
+            populateTable(data);
+        }
+
+        function showTransportData() {
+            const data = [
+                ["Buses", "Passengers", "1200"],
+                ["Trains", "Passengers", "800"],
+                ["Cycling Lanes", "Usage (%)", "35"]
+            ];
+            populateTable(data);
+        }
+
+        function exitPortal() {
+            if (confirm("Are you sure you want to exit the portal?")) {
+                window.close();
+            }
+        }
+    </script>
+</body>
+</html>
